@@ -13,7 +13,7 @@ html,body,button,input,textarea,select { font-family: var(--body); }
  position:absolute; z-index:0; pointer-events:none;
  right:-28px;top:-20px;width:min(44vw,570px);height:82%;
  opacity:.115;
- background-image:url('/assets/ornament-outline.png');
+ background-image:var(--ornament-image);
  background-size:230px auto;
  background-position:top right;
  background-repeat:repeat;

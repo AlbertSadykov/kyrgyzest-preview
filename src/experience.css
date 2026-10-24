@@ -83,7 +83,7 @@ html{scroll-padding-top:84px}body{background:#fcfaf7}
 .why-section{background:linear-gradient(180deg,#fffdfa 0%,#fff 35%,#fff 78%,#f8f4ee 100%)}
 .destinations-section{background:linear-gradient(180deg,#f8f4ee 0%,#f2eee8 32%,#f2eee8 73%,#fcfaf7 100%)}
 .destinations-section::before{height:80px;background:linear-gradient(180deg,#f8f4ee 0%,transparent 100%)}
-.dest-ornament{background-image:url('/assets/ornament-outline.png')!important;background-repeat:no-repeat!important;background-size:contain!important;opacity:.13!important;top:100px!important;right:-26px!important;transform:rotate(-9deg)}
+.dest-ornament{background-image:var(--ornament-image)!important;background-repeat:no-repeat!important;background-size:contain!important;opacity:.13!important;top:100px!important;right:-26px!important;transform:rotate(-9deg)}
 .map-section{background:linear-gradient(180deg,#fcfaf7,#fff 55%,#faf8f5 100%)}
 .gallery-section{background:linear-gradient(180deg,#faf8f5 0%,#f4f0eb 50%,#f7f3ee 100%)}
 .story-section{background:linear-gradient(180deg,#fff,#fffcf9 100%)}
@@ -125,7 +125,7 @@ html{scroll-padding-top:84px}body{background:#fcfaf7}
 .review-section::before{z-index:-2;background:linear-gradient(90deg,#132521 0%,rgba(19,37,33,.96) 37%,rgba(19,37,33,.77) 75%,rgba(19,37,33,.95) 100%),radial-gradient(ellipse at 84% 10%,#b77c463b,transparent 65%)}
 .review-section::after{inset:32px;border-color:#ffffff20}
 .review-section .review-orbit{width:590px;height:590px;right:-210px;top:-65px;border-color:#ffffff18}
-.review-section .review-orbit::after{content:"";position:absolute;left:160px;top:160px;width:185px;height:175px;opacity:.13;background:url('/assets/ornament-outline.png') center/contain no-repeat;transform:rotate(18deg)}
+.review-section .review-orbit::after{content:"";position:absolute;left:160px;top:160px;width:185px;height:175px;opacity:.13;background:var(--ornament-image) center/contain no-repeat;transform:rotate(18deg)}
 .review-card{background:rgba(255,255,255,.98)}
 .review-editorial h2 em{color:#f5cdb2}
 .cta-section{background:#182b27;min-height:620px}

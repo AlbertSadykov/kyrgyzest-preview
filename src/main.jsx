@@ -16,4 +16,8 @@ import './v8.css'
 import './v9.css'
 import './v10.css'
 import App from './App.jsx'
+document.documentElement.style.setProperty(
+  '--ornament-image',
+  `url("${import.meta.env.BASE_URL}assets/ornament-outline.png")`,
+)
 createRoot(document.getElementById('root')).render(<App />)

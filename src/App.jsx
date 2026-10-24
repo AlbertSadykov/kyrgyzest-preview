@@ -19,8 +19,11 @@ import {
 } from "./data/content";
 import kyrgyzstanOutline from "./data/kyrgyzstan-outline-detailed.json";
 
-const ORIGINAL = "/assets/kyrgyzest-original-logo.png";
-const WHITE_LETTERING = "/assets/kyrgyzest-logo-white-lettering.png";
+const asset = (filename) =>
+  `${import.meta.env.BASE_URL}assets/${filename}`;
+
+const ORIGINAL = asset("kyrgyzest-original-logo.png");
+const WHITE_LETTERING = asset("kyrgyzest-logo-white-lettering.png");
 const PHONE = "996551057666";
 const SITE = "https://kyrgyzest.com/";
 const socials = {
@@ -1381,7 +1384,7 @@ function Story() {
           data-aos-delay="100"
         >
           <img
-            src="/assets/jamilia-story.webp"
+            src={asset("jamilia-story.webp")}
             alt="Photo provided for the Kyrgyzest story: a guest near a yurt surrounded by Kyrgyz mountains"
             className="story-img"
           />

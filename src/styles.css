@@ -828,7 +828,7 @@ img {
   top: 20px;
   width: 300px;
   height: 250px;
-  background: url("/assets/ornament-outline.png") center/contain no-repeat;
+  background: var(--ornament-image) center/contain no-repeat;
   opacity: 0.11;
   pointer-events: none;
 }
@@ -1410,7 +1410,7 @@ img {
   width: 250px;
   height: 250px;
   opacity: 0.14;
-  background: url("/assets/ornament-outline.png") center/contain no-repeat;
+  background: var(--ornament-image) center/contain no-repeat;
   filter: brightness(0) invert(1);
 }
 .cta-copy {
