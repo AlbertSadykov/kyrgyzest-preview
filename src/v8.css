@@ -1,0 +1,39 @@
+/* Kyrgyzest v8 — four targeted refinements. */
+.review-section .review-ornament-pattern {
+  /* A gradual exit at the left, never a visible rectangular wallpaper edge. */
+  width: min(62vw, 880px) !important;
+  right: -52px !important;
+  top: -5% !important;
+  height: 112% !important;
+  opacity: .11 !important;
+  background-size: 225px auto !important;
+  background-position: 100% 0 !important;
+  -webkit-mask-image: linear-gradient(90deg,transparent 0%,rgba(0,0,0,.12) 15%,rgba(0,0,0,.55) 29%,#000 53%) !important;
+  mask-image: linear-gradient(90deg,transparent 0%,rgba(0,0,0,.12) 15%,rgba(0,0,0,.55) 29%,#000 53%) !important;
+  transform: none !important;
+  animation: none !important;
+}
+.journal-post-meta span.journal-date {
+  font-size: 12px !important;
+  letter-spacing: .045em;
+  gap: 6px;
+  font-weight: 700;
+  color: #706e68;
+}
+.journal-post-meta span.journal-date i { font-size: 15px !important; }
+.journal-post-meta .journal-draft-tag {
+  font-size: 9px !important;
+  font-weight: 800;
+  letter-spacing: .075em;
+  color: #ad653b !important;
+  background: #f3e4da;
+  padding: 4px 6px;
+  border-radius: 5px;
+  margin-left: 3px;
+}
+.kg-country-mask { pointer-events: none; }
+.kg-country-border,.kg-country-halo { vector-effect:non-scaling-stroke; stroke-linejoin:round;stroke-linecap:round; }
+@media(max-width:768px){
+  .review-section .review-ornament-pattern { width: 98vw !important; right: -18vw !important; opacity:.085 !important; background-size: 175px auto !important; }
+  .journal-post-meta span.journal-date {font-size:11px !important;}
+}

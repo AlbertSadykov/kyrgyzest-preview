@@ -1,0 +1,25 @@
+{
+  "name": "kyrgyzest-home-react-v10",
+  "private": true,
+  "version": "10.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "swiper": "^11.2.10",
+    "aos": "^2.3.4",
+    "remixicon": "^4.7.0",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "vite": "^6.3.5",
+    "tailwindcss": "^4.1.11",
+    "@tailwindcss/vite": "^4.1.11"
+  }
+}

@@ -1,0 +1,232 @@
+/* KYRGYZEST v10: review overflow fix and stable, accessible card movement. */
+.review-section {
+  overflow: hidden;
+}
+.review-tabs {
+  margin-bottom: 40px;
+}
+.review-brand {
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  border-radius: 0;
+}
+.review-brand img {
+  display: block;
+  width: 26px;
+  height: 26px;
+  max-width: none;
+  object-fit: contain;
+}
+.review-brand-google,
+.review-brand-trip {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  overflow: hidden;
+}
+.review-brand-google img {
+  width: 23px;
+  height: 23px;
+}
+.review-brand-trip {
+  background: #34e0a1;
+}
+.review-brand-trip img {
+  width: 30px;
+  height: 30px;
+}
+.review-tab:not(.is-active) .review-brand-trip {
+  background: #34e0a1;
+}
+.review-tabs .review-brand-fallback {
+  display: none;
+}
+.reviews-v10 {
+  min-width: 0;
+  width: 100%;
+  clear: both;
+  display: block;
+  position: relative;
+  isolation: isolate;
+}
+.reviews-v10-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  margin: 0 0 20px;
+}
+.reviews-v10-intro > div:first-child {
+  max-width: 580px;
+}
+.reviews-v10-intro p {
+  color: #c5d3c9;
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 9px 0 0;
+}
+.reviews-v10 .review-nav {
+  margin: 0;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.reviews-v10 .review-nav button {
+  border: 1px solid #ffffff4a;
+  background: #ffffff17;
+  color: #fff;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+.reviews-v10 .review-nav button:hover {
+  background: #ff700f;
+  transform: translateY(-2px);
+}
+.review-carousel-viewport {
+  position: relative;
+  width: calc(100% + max(36px, (100vw - 1380px) / 2));
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.reviews-v10 .reviews-swiper-v10 {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 12px 12px 50px !important;
+}
+.reviews-v10 .reviews-swiper-v10 .swiper-wrapper {
+  box-sizing: border-box;
+  align-items: stretch;
+}
+.reviews-v10 .reviews-swiper-v10 .swiper-slide {
+  height: auto !important;
+  display: flex;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.reviews-v10 .review-card {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 370px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.reviews-v10 .review-card .review-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+.reviews-v10 .review-author {
+  margin-top: 18px;
+}
+.review-provider-card {
+  background: linear-gradient(145deg, #fff, #f9f6ef);
+  color: #27342d;
+  border-radius: 26px;
+  padding: clamp(30px, 4vw, 55px);
+  box-shadow: 0 22px 44px #0002;
+  display: flex;
+  flex-direction: column;
+  min-height: 352px;
+  align-items: flex-start;
+  justify-content: center;
+}
+.review-provider-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: #66776a;
+}
+.review-provider-heading .review-brand {
+  height: 43px;
+  width: 43px;
+}
+.review-provider-heading .review-brand img {
+  height: 43px;
+  width: 43px;
+}
+.review-provider-card h4 {
+  font: 800 clamp(29px, 3.1vw, 43px)/1.2 var(--heading, "Manrope", sans-serif);
+  letter-spacing: -0.05em;
+  margin: 24px 0 18px;
+}
+.review-provider-card p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #69756d;
+  max-width: 500px;
+}
+.review-provider-card > a {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #bb5927;
+  font-size: 14px;
+  font-weight: 800;
+}
+.review-provider-card > a:hover {
+  text-decoration: underline;
+}
+.review-external-heading > .review-brand-google {
+  background: #fff;
+}
+.review-external-heading > .review-brand-trip {
+  background: #34e0a1;
+}
+@media (max-width: 760px) {
+  .review-tabs {
+    margin-bottom: 28px;
+  }
+  .reviews-v10-intro {
+    align-items: center;
+    gap: 15px;
+  }
+  .reviews-v10-intro p {
+    font-size: 13px;
+  }
+  .reviews-v10 .review-nav button {
+    width: 43px;
+    height: 43px;
+  }
+  .reviews-v10 .review-card {
+    min-height: 335px;
+  }
+  .reviews-v10 .reviews-swiper-v10 {
+    padding: 10px 6px 38px !important;
+  }
+}
+@media (max-width: 540px) {
+  .reviews-v10-intro {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .reviews-v10 .review-nav {
+    justify-content: flex-end;
+  }
+  .review-tab {
+    min-width: 0;
+  }
+  .review-brand-google img {
+    width: 21px;
+    height: 21px;
+  }
+  .review-provider-card {
+    min-height: 300px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reviews-v10 .review-card {
+    transition: none !important;
+  }
+}

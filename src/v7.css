@@ -1,0 +1,72 @@
+/* Kyrgyzest v7: targeted UX refinements without changing the approved layout. */
+:root { --body: "Gilroy", "Manrope", sans-serif; }
+html,body,button,input,textarea,select { font-family: var(--body); }
+/* Ornaments are cultural motifs: never rotate them or animate their orientation. */
+.dest-ornament,.cta-decoration,.review-ornament-pattern,
+.review-ornament-pattern::before,.review-ornament-pattern::after {
+ transform: none !important; rotate: none !important; animation: none !important;
+}
+/* Reviews: delete orbit circles and replace with one very subtle pattern area. */
+.review-section .review-orbit,.review-orbit::before,.review-orbit::after { display:none !important; }
+.review-section { isolation:isolate; }
+.review-ornament-pattern {
+ position:absolute; z-index:0; pointer-events:none;
+ right:-28px;top:-20px;width:min(44vw,570px);height:82%;
+ opacity:.115;
+ background-image:url('/assets/ornament-outline.png');
+ background-size:230px auto;
+ background-position:top right;
+ background-repeat:repeat;
+ filter:brightness(0) invert(1);
+ -webkit-mask-image:radial-gradient(ellipse 90% 80% at 67% 42%,#000 34%,transparent 96%);
+ mask-image:radial-gradient(ellipse 90% 80% at 67% 42%,#000 34%,transparent 96%);
+}
+.review-section .reviews-layout { position:relative;z-index:1; }
+/* Journal: clearly dated mock editorial drafts, NOT fake publication dates. */
+.journal-post-meta .journal-date { display:inline-flex;align-items:center;gap:4px;
+ color:#82796e;font-size:10px;white-space:nowrap;letter-spacing:.055em; }
+.journal-post-meta .journal-date i {font-size:13px;color:#c66c3a;}
+/* CTA: lift the source image so the yurts are more visible without blank edges. */
+.cta-section .cta-backdrop img {
+ object-fit:cover !important;
+ object-position: center 65% !important;
+ transform: translateY(-3%) scale(1.13) !important;
+ transform-origin:center center;
+}
+/* Light editorial footer. Reuse original orange/brown logotype without a badge. */
+.footer.footer-v6 {
+ background:#f6f3ee !important;
+ background-image:linear-gradient(180deg,#faf8f5 0%,#f6f3ee 38%,#f1eee8 100%) !important;
+ color:#222922 !important;
+}
+.footer-v6 .footer-hero { border-bottom-color:#ddd8d0 !important; }
+.footer-v6 .footer-kicker { color:#a95c33 !important; }
+.footer-v6 .footer-kicker i {color:#d76e2e !important;}
+.footer-v6 .footer-hero h2 { color:#252820 !important; }
+.footer-v6 .footer-hero h2 em {color:#b9673a !important;}
+.footer-v6 .footer-hero-copy>p {color:#6f706b !important;}
+.footer-v6 .footer-plan-link {color:#fff !important;background:#552312 !important;border-color:#552312 !important;}
+.footer-v6 .footer-plan-link:hover {background:#79402a !important;border-color:#79402a !important;}
+.footer-v6 .footer-plan-link i {color:#ffa66e !important;}
+.footer-v6 .footer-brand img {filter:none !important;object-fit:contain !important;}
+.footer-v6 .footer-brand p {color:#71746e !important;}
+.footer-v6 .footer-social a {background:#fff !important;color:#552312 !important;border:1px solid #e1d9d0 !important;}
+.footer-v6 .footer-social a:hover {background:#ffeadb !important;border-color:#edae86 !important;}
+.footer-v6 .footer-nav h4 {color:#a76340 !important;}
+.footer-v6 .footer-nav a,.footer-v6 .footer-nav span {color:#555d54 !important;}
+.footer-v6 .footer-nav a:hover {color:#ad5e30 !important;}
+.footer-v6 .footer-nav span i {color:#be754c !important;}
+.footer-v6 .footer-bottom {border-top-color:#dcd6cf !important;color:#798078 !important;}
+.footer-v6 .footer-bottom>a {color:#353a34 !important;}
+.footer-v6 .footer-payments-note {color:#77736d !important;}
+.footer-v6 .payment-brand {background:#fff;border:1px solid #e5dfd8;box-shadow:0 4px 14px rgba(34,27,20,.035);}
+.footer-v6 .footer-main {padding-top:65px;}
+/* Country mask stays beneath pins; outline remains crisp at any map zoom. */
+.leaflet-pane.kg-focus-pane,.leaflet-pane.kg-border-pane {pointer-events:none;}
+.kg-country-border {stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;}
+@media(max-width:760px) {
+ .review-ornament-pattern {width:75vw;right:-14vw;opacity:.075;background-size:180px auto;}
+ .footer-v6 .footer-hero {padding-top:70px;}
+ .cta-section .cta-backdrop img {object-position:center 68% !important;transform:translateY(-3%) scale(1.16) !important;}
+}
+@media(prefers-reduced-motion:reduce){.cta-section .cta-backdrop img{transform:none !important;}}
