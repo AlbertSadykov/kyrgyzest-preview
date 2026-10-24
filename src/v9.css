@@ -156,9 +156,7 @@
 .review-brand-site i {
   font-size: 19px;
 }
-.review-tab:not(.is-active) .review-brand {
-  background: #ffffffec;
-}
+
 .review-tab-panel {
   position: relative;
   z-index: 1;

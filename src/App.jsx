@@ -19,8 +19,8 @@ import {
 } from "./data/content";
 import kyrgyzstanOutline from "./data/kyrgyzstan-outline-detailed.json";
 
-const asset = (filename) =>
-  `${import.meta.env.BASE_URL}assets/${filename}`;
+const publicFile = (path) => `${import.meta.env.BASE_URL}${path}`;
+const asset = (filename) => publicFile(`assets/${filename}`);
 
 const ORIGINAL = asset("kyrgyzest-original-logo.png");
 const WHITE_LETTERING = asset("kyrgyzest-logo-white-lettering.png");
@@ -1043,13 +1043,17 @@ function ReviewBrand({ platform }) {
   if (platform === "google")
     return (
       <span className="review-brand review-brand-google">
-        <img src="/brands/google-g.svg" alt="" loading="lazy" />
+        <img src={publicFile("brands/google-g.svg")} alt="" loading="lazy" />
       </span>
     );
   if (platform === "tripadvisor")
     return (
       <span className="review-brand review-brand-trip">
-        <img src="/brands/tripadvisor-owl.svg" alt="" loading="lazy" />
+        <img
+          src={publicFile("brands/tripadvisor-owl.svg")}
+          alt=""
+          loading="lazy"
+        />
       </span>
     );
   return (
@@ -1538,8 +1542,31 @@ function Faq() {
                 <I name={open === i ? "subtract-line" : "add-line"} />
               </button>
               <div id={`faq-answer-${i}`} className="faq-answer" role="region">
-                <div>
-                  <p>{f.a}</p>
+                <div className="faq-answer-content">
+                  {f.a.map((block, index) => {
+                    if (block.type === "list") {
+                      return (
+                        <ul key={index}>
+                          {block.items.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      );
+                    }
+                    if (block.type === "link") {
+                      return (
+                        <a
+                          key={index}
+                          href={block.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {block.label}
+                        </a>
+                      );
+                    }
+                    return <p key={index}>{block.text}</p>;
+                  })}
                 </div>
               </div>
             </div>

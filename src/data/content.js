@@ -59,15 +59,73 @@ export const reviews=[
   {name:'Jan-Peter',place:'Germany'},
 ]
 export const faqs=[
-  {q:'Who are these tours for?',a:'For solo travellers, friends and couples who want to explore Kyrgyzstan together in a small group.'},
-  {q:'What kind of food can I expect during the trip?',a:'Expect Kyrgyz favourites such as beshbarmak, manty, lagman and boorsok. Vegetarian options are available upon request.'},
-  {q:'What level of comfort can I expect?',a:'Accommodation is carefully chosen for each location, including hotels and yurt camps. Reliable transport is a priority.'},
-  {q:'What are the entry requirements for Kyrgyzstan?',a:'Visa rules depend on nationality. Check the official government e-visa website before travel: https://www.evisa.e-gov.kg/'},
-  {q:'Do I need any physical preparation?',a:'Standard tours do not require specialised training. Expect some longer road journeys; the horseback itinerary benefits from prior riding experience.'},
-  {q:'Will there be internet and phone signal during the trip?',a:'Wi-Fi is available at hotels, but service may be interrupted in remote mountain areas.'},
-  {q:'What meals are included in the tour price?',a:'Most meals are included on group tours; some meals during travel days may be excluded.'},
-  {q:'Is it safe to travel to Kyrgyzstan?',a:'Kyrgyzest works with experienced guides and drivers, trusted accommodation and planned routes. Refer to the tour conditions for details.'},
-  {q:'How can we make zoom call?',a:'Contact the Kyrgyzest team to arrange a convenient time to discuss your travel plans.'}
+  {
+    q:'Who are these tours for?',
+    a:[
+      {type:'paragraph',text:'Our tours are for solo travellers, friends, couples, and anyone who wants to explore Kyrgyzstan with like-minded people.'},
+      {type:'paragraph',text:'By the end of the journey, travellers often become friends.'}
+    ]
+  },
+  {
+    q:'What kind of food can I expect during the trip?',
+    a:[
+      {type:'paragraph',text:'Throughout the tour, you’ll enjoy a variety of traditional Kyrgyz dishes, including:'},
+      {type:'list',items:['Beshbarmak, manty, lagman, and kuurdak','Boorsok and other local specialities']},
+      {type:'paragraph',text:'The menu offers new flavours each day, with no repeated meals. Vegetarian and lighter options are available upon request.'},
+      {type:'paragraph',text:'Kyrgyzstan is a Muslim-majority country, and all meals provided during the tour are halal.'}
+    ]
+  },
+  {
+    q:'What level of comfort can I expect?',
+    a:[
+      {type:'paragraph',text:'We choose the best available accommodation in each location, including remote areas. Depending on the destination, you may stay in a yurt camp or a hotel.'},
+      {type:'paragraph',text:'Comfort and reliability are also priorities when we select transportation. We do our best to make your journey smooth and enjoyable from start to finish.'}
+    ]
+  },
+  {
+    q:'What are the entry requirements for Kyrgyzstan?',
+    a:[
+      {type:'paragraph',text:'Many nationalities can enter Kyrgyzstan without a visa. Requirements depend on your citizenship, so check the official government e-Visa website before travelling.'},
+      {type:'link',href:'https://www.evisa.e-gov.kg/',label:'Official Kyrgyzstan e-Visa website'},
+      {type:'paragraph',text:'If you’re unsure, contact us and we’ll be happy to help you find the latest information.'}
+    ]
+  },
+  {
+    q:'Do I need any physical preparation?',
+    a:[
+      {type:'paragraph',text:'You don’t need special physical training for our standard tours. Please be prepared for some long drives between destinations, sometimes lasting several hours. We provide water in the car, and the routes offer beautiful mountain views.'},
+      {type:'paragraph',text:'The programme also includes a horse-riding activity. The horses are accustomed to working with travellers; follow your guide’s instructions for a safe and enjoyable experience.'},
+      {type:'paragraph',text:'For the Horse Trekking Tour, we recommend some previous riding experience because horse riding is planned each day.'}
+    ]
+  },
+  {
+    q:'Will there be internet and phone signal during the trip?',
+    a:[
+      {type:'paragraph',text:'Most parts of the route have mobile signal and internet access. In some mountain areas, canyons, and remote valleys, the connection may temporarily drop.'},
+      {type:'paragraph',text:'Hotels along the route provide Wi-Fi. On group tours, we provide a local SIM card.'}
+    ]
+  },
+  {
+    q:'What meals are included in the tour price?',
+    a:[
+      {type:'paragraph',text:'On our group tours, most meals are included in the tour price.'},
+      {type:'paragraph',text:'Meals taken on the road during travel days are not included.'}
+    ]
+  },
+  {
+    q:'Is it safe to travel to Kyrgyzstan?',
+    a:[
+      {type:'paragraph',text:'Kyrgyzstan is generally a safe country to visit, and safety is our top priority. We support our travellers with:'},
+      {type:'list',items:['Experienced local guides and professional drivers','Small groups and carefully planned routes','Trusted accommodation and support from our team throughout the tour']},
+      {type:'paragraph',text:'Many of our guests travel solo, including women, and feel comfortable during their journey.'}
+    ]
+  },
+  {
+    q:'How can we arrange a Zoom call?',
+    a:[
+      {type:'paragraph',text:'Contact our manager to arrange a Zoom call. We’ll coordinate a convenient time to discuss tour details, answer your questions, and tailor the programme to your preferences.'}
+    ]
+  }
 ]
 // Approximate locations for genuine places named in published tour routes. No fabricated polylines.
 export const mapPoints=[

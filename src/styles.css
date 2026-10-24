@@ -1355,7 +1355,7 @@ img {
   gap: 23px;
   padding: 25px 4px;
   color: #2b3030;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 800;
 }
 .faq-item > button > i {
@@ -1378,14 +1378,38 @@ img {
     grid-template-rows 0.38s ease,
     opacity 0.38s ease;
 }
-.faq-answer > div {
+.faq-answer-content {
   overflow: hidden;
+  padding: 0 36px 27px 47px;
 }
-.faq-answer p {
-  margin: 0 36px 27px 47px;
-  color: #767a78;
+.faq-answer-content p {
+  margin: 0 0 12px;
+  color: #282929;
   line-height: 1.8;
+  font-size: 16px;
+}
+.faq-answer-content p:last-child {
+  margin-bottom: 0;
+}
+.faq-answer-content ul {
+  margin: 0 0 12px;
+  padding-left: 21px;
+  list-style-type: disc;
+  color: #292929;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.faq-answer-content li::marker {
+  color: var(--orange);
+}
+.faq-answer-content a {
+  display: inline-block;
+  margin: 0 0 12px;
+  color: var(--orange);
   font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .faq-item.open .faq-answer {
   grid-template-rows: 1fr;
@@ -2200,8 +2224,8 @@ img {
     gap: 13px;
     font-size: 13px;
   }
-  .faq-answer p {
-    margin-left: 37px;
+  .faq-answer-content {
+    padding-left: 37px;
   }
   .cta-section {
     padding: 75px 0;
