@@ -215,108 +215,49 @@ function VideoHero({ openBooking }) {
   const [muted, setMuted] = useState(true),
     [playing, setPlaying] = useState(false),
     [unavailable, setUnavailable] = useState(false);
-  const playerRef = useRef(null),
-    playerId = useRef(`yt-background-${Math.floor(Math.random() * 1e6)}`),
-    mounted = useRef(true);
-  useEffect(() => {
-    mounted.current = true;
-    let poll,
-      id = "kyrgyzest-yt-api";
-    const setup = () => {
-      if (!window.YT?.Player || playerRef.current) return;
-      try {
-        playerRef.current = new window.YT.Player(playerId.current, {
-          videoId: "D-l3dSWbEtg",
-          playerVars: {
-            autoplay: 1,
-            mute: 1,
-            controls: 0,
-            start: 50,
-            playsinline: 1,
-            rel: 0,
-            modestbranding: 1,
-            loop: 1,
-            playlist: "D-l3dSWbEtg",
-            disablekb: 1,
-            iv_load_policy: 3,
-            origin: window.location.origin,
-          },
-          events: {
-            onReady: (e) => {
-              e.target.mute();
-              e.target.seekTo(50, true);
-              e.target.playVideo();
-            },
-            onStateChange: (e) => {
-              if (!mounted.current) return;
-              setPlaying(e.data === window.YT.PlayerState.PLAYING);
-              if (e.data === window.YT.PlayerState.ENDED) e.target.seekTo(50);
-            },
-            onError: () => {
-              if (mounted.current) setUnavailable(true);
-            },
-          },
-        });
-      } catch {
-        setUnavailable(true);
-      }
-    };
-    if (window.YT?.Player) setup();
-    else {
-      if (!document.getElementById(id)) {
-        const s = document.createElement("script");
-        s.id = id;
-        s.src = "https://www.youtube.com/iframe_api";
-        s.async = true;
-        document.head.appendChild(s);
-      }
-      poll = window.setInterval(() => {
-        if (window.YT?.Player) {
-          clearInterval(poll);
-          setup();
-        }
-      }, 350);
-    }
-    return () => {
-      mounted.current = false;
-      clearInterval(poll);
-      try {
-        playerRef.current?.destroy();
-      } catch {}
-      playerRef.current = null;
-    };
-  }, []);
+  const playerRef = useRef(null);
   const toggleSound = () => {
-    const p = playerRef.current;
-    if (!p) return;
-    try {
-      if (muted) {
-        p.unMute();
-        p.setVolume(65);
-      } else p.mute();
-      setMuted(!muted);
-    } catch {}
+    const video = playerRef.current;
+    if (!video) return;
+    video.muted = !muted;
+    setMuted(video.muted);
   };
   const togglePlay = () => {
-    const p = playerRef.current;
-    if (!p) return;
-    try {
-      if (playing) p.pauseVideo();
-      else p.playVideo();
-    } catch {}
+    const video = playerRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play().catch(() => setUnavailable(true));
+    } else {
+      video.pause();
+    }
   };
   return (
     <section id="home" className="hero">
-      <ImageWithFallback
-        src={photos.hero}
-        className="hero-fallback-image"
-        alt="Kyrgyzest mountain landscape"
-        loading="eager"
-      />
+      {unavailable && (
+        <ImageWithFallback
+          src={photos.hero}
+          className="hero-fallback-image"
+          alt="Kyrgyzest mountain landscape"
+          loading="eager"
+        />
+      )}
       <div
-        className={`hero-video ${playing && !unavailable ? "hero-video-visible" : ""}`}
+        className={`hero-video ${!unavailable ? "hero-video-visible" : ""}`}
       >
-        <div id={playerId.current} className="hero-player" />
+        <video
+          ref={playerRef}
+          className="hero-player"
+          src={asset("kyrgyzstan-hero.mp4")}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          onError={() => setUnavailable(true)}
+        />
       </div>
       <div className="hero-shade" />
       <div className="hero-inner max-container">
@@ -415,14 +356,14 @@ function VideoHero({ openBooking }) {
             <button
               aria-label={playing ? "Pause video" : "Play video"}
               onClick={togglePlay}
-              disabled={!playerRef.current}
+              disabled={unavailable}
             >
               <I name={playing ? "pause-line" : "play-line"} />
             </button>
             <a
-              href="https://youtu.be/D-l3dSWbEtg?t=50"
-              aria-label="Watch film on YouTube"
-              title="Watch film"
+              href="https://drive.google.com/file/d/1uwNoXiyyjOwHhcj_oEQc5obvoadlbz1-/view"
+              aria-label="Watch original film on Google Drive"
+              title="Watch original film"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -32,7 +32,7 @@ html{scroll-padding-top:84px}body{background:#fcfaf7}
 .hero-shade{background:linear-gradient(90deg,rgba(4,19,19,.92) 0%,rgba(4,23,23,.8) 27%,rgba(10,32,30,.46) 62%,rgba(8,23,26,.42) 100%),linear-gradient(180deg,rgba(4,16,19,.3) 0%,rgba(4,16,19,0) 30%,rgba(5,19,20,.14) 72%,rgba(5,19,20,.96) 100%)}
 .hero::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:100px;z-index:0;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(7,22,22,.55) 55%,#fcfaf7 100%);opacity:.5}
 .hero-fallback-image{filter:brightness(.91) saturate(.95);object-position:center 50%}
-.hero-video{transition:opacity 1.75s ease-in-out}
+.hero-video{transition:none}
 .hero-inner{padding-top:155px;padding-bottom:100px;justify-content:center}
 .hero-topline{position:absolute;top:159px;left:0;display:flex;align-items:center;gap:13px;color:rgba(255,255,255,.66);font-size:10px;letter-spacing:.2em;font-weight:750}
 .hero-topline-dot{width:7px;height:7px;background:#ff852b;border-radius:50%;box-shadow:0 0 0 5px #ff700f22}
