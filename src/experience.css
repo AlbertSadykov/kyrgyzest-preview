@@ -33,6 +33,9 @@ html{scroll-padding-top:84px}body{background:#fcfaf7}
 .hero::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:100px;z-index:0;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(7,22,22,.55) 55%,#fcfaf7 100%);opacity:.5}
 .hero-fallback-image{filter:brightness(.91) saturate(.95);object-position:center 50%}
 .hero-video{transition:none}
+.hero-video-controls .hero-sound-toggle{display:flex;width:auto;min-width:44px;padding:0 15px;align-items:center;justify-content:center;gap:8px;border-radius:999px;font-size:13px;font-weight:500}
+.hero-video-controls .hero-sound-toggle i{font-size:18px}
+.hero-video-controls .hero-sound-toggle:disabled{opacity:.55}
 .hero-inner{padding-top:155px;padding-bottom:100px;justify-content:center}
 .hero-topline{position:absolute;top:159px;left:0;display:flex;align-items:center;gap:13px;color:rgba(255,255,255,.66);font-size:10px;letter-spacing:.2em;font-weight:750}
 .hero-topline-dot{width:7px;height:7px;background:#ff852b;border-radius:50%;box-shadow:0 0 0 5px #ff700f22}

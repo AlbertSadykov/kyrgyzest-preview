@@ -212,15 +212,31 @@ function Header({ openBooking }) {
   );
 }
 function VideoHero({ openBooking }) {
-  const [muted, setMuted] = useState(true),
+  const [muted, setMuted] = useState(false),
     [playing, setPlaying] = useState(false),
     [unavailable, setUnavailable] = useState(false);
   const playerRef = useRef(null);
+  useEffect(() => {
+    const video = playerRef.current;
+    if (!video) return;
+
+    video.play().catch(() => {
+      video.muted = true;
+      setMuted(true);
+      video.play().catch(() => setUnavailable(true));
+    });
+  }, []);
   const toggleSound = () => {
     const video = playerRef.current;
     if (!video) return;
     video.muted = !muted;
     setMuted(video.muted);
+    if (!video.muted && video.paused) {
+      video.play().catch(() => {
+        video.muted = true;
+        setMuted(true);
+      });
+    }
   };
   const togglePlay = () => {
     const video = playerRef.current;
@@ -249,7 +265,7 @@ function VideoHero({ openBooking }) {
           className="hero-player"
           src={asset("kyrgyzstan-hero.mp4")}
           autoPlay
-          muted
+          muted={muted}
           loop
           playsInline
           preload="auto"
@@ -267,21 +283,23 @@ function VideoHero({ openBooking }) {
               <I name="sun-line" /> YOUR JOURNEY INTO KYRGYZSTAN
             </p>
             <h1>
-              Travel Beyond the Ordinary.
+              Discover Kyrgyzstan
               <br />
-              <em>Experience the Soul of Kyrgyzstan.</em>
+              <em>beyond the expected.</em>
             </h1>
-            <p className="hero-tagline">Kyrgyzstan is one of them.</p>
+            <p className="hero-tagline">
+              A country best experienced from the inside.
+            </p>
             <p className="hero-text">
-              Discover vast mountain landscapes, nomadic traditions and the
-              remarkable people who call this place home.
+              Thoughtfully planned small-group and private journeys, shaped by
+              local knowledge and the warmth of Kyrgyz hospitality.
             </p>
             <div className="hero-buttons">
               <Button href="#tours" icon="arrow-right-up-line">
-                Discover our journeys
+                Explore the journeys
               </Button>
               <button className="hero-secondary-cta" onClick={openBooking}>
-                Plan a private trip <I name="arrow-right-line" />
+                Plan a private journey <I name="arrow-right-line" />
               </button>
             </div>
             <a href="#intro" className="hero-scroll-inline">
@@ -314,7 +332,7 @@ function VideoHero({ openBooking }) {
             <div className="hero-featured-details">
               <div className="hero-featured-meta">
                 <span>
-                  <I name="calendar-event-line" /> October departures
+                  <I name="calendar-event-line" /> October
                 </span>
                 <span>
                   <I name="time-line" /> 7 days
@@ -325,7 +343,10 @@ function VideoHero({ openBooking }) {
                 <br />
                 Autumn Tour
               </h2>
-              <p>Golden landscapes, mountain valleys and local traditions.</p>
+              <p>
+                A week among alpine landscapes, local traditions and autumn
+                light.
+              </p>
               <a
                 className="hero-featured-link"
                 href="https://kyrgyzest.com/tours/kyrgyzest-autumn-tour/"
@@ -347,11 +368,14 @@ function VideoHero({ openBooking }) {
               {playing ? "THE KYRGYZSTAN FILM" : "WATCH THE JOURNEY"}
             </span>
             <button
+              className="hero-sound-toggle"
               aria-label={muted ? "Turn video sound on" : "Mute video"}
-              disabled={!playing}
+              aria-pressed={!muted}
+              title={muted ? "Enable video sound" : "Mute video"}
               onClick={toggleSound}
             >
               <I name={muted ? "volume-mute-line" : "volume-up-line"} />
+              {muted && <span>Enable sound</span>}
             </button>
             <button
               aria-label={playing ? "Pause video" : "Play video"}
@@ -385,21 +409,22 @@ function IntroBridge({ openBooking }) {
       <div className="max-container intro-bridge-inner">
         <div className="intro-bridge-copy" data-aos="fade-up">
           <span className="intro-eyebrow">
-            WELCOME TO KYRGYZEST <span className="intro-rule" />
+            A MORE PERSONAL WAY TO DISCOVER KYRGYZSTAN{" "}
+            <span className="intro-rule" />
           </span>
           <p>
-            Come closer to the <em>real Kyrgyzstan.</em> The landscapes are
-            extraordinary. The people make it unforgettable.
+            Discover Kyrgyzstan through the landscapes, traditions and people
+            that define it — guided by those who call it home.
           </p>
           <div className="intro-features">
             <span>
-              <I name="compass-3-line" /> Local perspectives
+              <I name="compass-3-line" /> Local insight
             </span>
             <span>
-              <I name="heart-3-line" /> Thoughtful journeys
+              <I name="heart-3-line" /> Considered planning
             </span>
             <span>
-              <I name="leaf-line" /> Authentic experiences
+              <I name="leaf-line" /> Kyrgyz hospitality
             </span>
           </div>
         </div>
@@ -410,13 +435,13 @@ function IntroBridge({ openBooking }) {
         >
           <div className="intro-photo">
             <ImageWithFallback
-              src={photos.mountains}
-              alt="Mountain scenery from a Kyrgyzest journey"
+              src={asset("kyrgyzest-yurt-camp-dusk.png")}
+              alt="Yurt camp beneath the evening sky in Kyrgyzstan"
             />
           </div>
           <div className="intro-photo-meta">
             <span>
-              <I name="map-pin-2-line" /> MADE FOR THE CURIOUS
+              <I name="map-pin-2-line" /> YURT CAMP · KYRGYZSTAN
             </span>
             <button onClick={openBooking}>
               Let's plan your journey <I name="arrow-right-up-line" />
@@ -442,15 +467,15 @@ function Tours() {
     <section id="tours" className="section section-tours">
       <div className="max-container">
         <SectionHeading
-          eyebrow="THE JOURNEYS"
+          eyebrow="SMALL-GROUP & PRIVATE JOURNEYS"
           title={
             <>
-              Every journey has
+              Find your way
               <br />
-              <em>a story to tell.</em>
+              <em>into Kyrgyzstan.</em>
             </>
           }
-          desc="Thoughtfully designed adventures, extraordinary places and moments that stay with you."
+          desc="Choose a small-group journey, set out on horseback or plan a private itinerary around your own pace. Each route is shaped by local knowledge and thoughtful detail."
           action={
             <div className="carousel-arrows">
               <button ref={prev} aria-label="Previous tour">
@@ -533,23 +558,23 @@ function Why() {
   const perks = [
     {
       icon: "global-line",
-      title: "High-Quality Service with an International Touch",
-      desc: "International standards of organisation, paired with genuine Kyrgyz hospitality.",
+      title: "Considered from the first conversation",
+      desc: "Talk through your plans with our team before you book. For private travel, we shape the route around your interests and preferred pace.",
     },
     {
       icon: "compass-3-line",
-      title: "Experts",
-      desc: "Experienced local guides, drivers and trusted partners who know the country deeply.",
+      title: "Local knowledge, shared generously",
+      desc: "Experienced guides and drivers bring context to the places, traditions and people you encounter.",
     },
     {
       icon: "group-line",
-      title: "Authentic Small-Group Tours",
-      desc: "Small, personal groups travel together with a dedicated guide for a more connected experience.",
+      title: "A more personal way to travel",
+      desc: "Small groups leave room for conversation, connection and the moments that cannot be planned.",
     },
     {
       icon: "award-line",
-      title: "Quality",
-      desc: "Thoughtfully selected accommodation, comfortable vehicles and careful planning at every stage.",
+      title: "Comfort, thoughtfully considered",
+      desc: "We choose the best available stays for each location and reliable transport for the route, including in remote regions.",
     },
   ];
   return (
@@ -563,20 +588,20 @@ function Why() {
           />
           <div className="why-image-caption">
             <I name="double-quotes-l" />
-            <span>Travel becomes extraordinary when it feels personal.</span>
+            <span>The best journeys make a country feel personal.</span>
           </div>
         </div>
         <div className="why-content" data-aos="fade-up">
           <Eyebrow>THE KYRGYZEST DIFFERENCE</Eyebrow>
           <h2 className="section-title">
-            Why travel
+            The details matter.
             <br />
-            <em>with Kyrgyzest?</em>
+            <em>Every step of the way.</em>
           </h2>
           <p className="why-lead">
-            Inspired by Jamilia's experience in London and rooted in Kyrgyz
-            heritage, every journey brings together knowledgeable people,
-            reliable organisation and warm local hospitality.
+            From your first conversation to the final transfer, our team brings
+            together local knowledge, thoughtful planning and the warmth of a
+            genuinely personal welcome.
           </p>
           <div className="why-benefits">
             {perks.map((p, i) => (
@@ -615,15 +640,15 @@ function Destinations() {
       <div className="dest-ornament" aria-hidden="true" />
       <div className="max-container">
         <SectionHeading
-          eyebrow="PLACES THAT STAY WITH YOU"
+          eyebrow="A COUNTRY OF CONTRASTS"
           title={
             <>
-              Find your kind
+              The mountains
               <br />
-              of <em>wonder.</em>
+              are only <em>the beginning.</em>
             </>
           }
-          desc="From alpine lakes to dramatic canyons — landscapes woven into the journeys we share."
+          desc="High pastures, forested valleys, a vast alpine lake and the red cliffs of Jeti-Oguz — each place reveals a different side of Kyrgyzstan."
         />
         <div className="dest-grid">
           {destinations.map((d, i) => (
@@ -813,25 +838,25 @@ function MapSection() {
     <section className="section map-section" id="map">
       <div className="max-container">
         <SectionHeading
-          eyebrow="FOLLOW THE LAND"
+          eyebrow="THE ROUTE, AT A GLANCE"
           title={
             <>
-              Every route leads
+              See the country
               <br />
-              <em>somewhere remarkable.</em>
+              <em>take shape.</em>
             </>
           }
-          desc="Explore real places featured in our published itineraries. Select a tour to view its destinations."
+          desc="Follow the places featured in our published itineraries. Select a journey to see its destinations."
         />
         <div className="map-shell" data-aos="fade-up">
           <div className="map-sidebar">
-            <span className="small-label">DISCOVER THE ROUTES</span>
+            <span className="small-label">EXPLORE THE ITINERARIES</span>
             <h3>
-              Choose your
+              Choose a
               <br />
               journey.
             </h3>
-            <p>See where each experience can take you across Kyrgyzstan.</p>
+            <p>See how each journey moves across the country.</p>
             <div
               className="map-tour-options"
               role="group"
@@ -916,15 +941,15 @@ function Gallery({ openPhoto }) {
     <section className="section gallery-section" id="gallery">
       <div className="max-container">
         <SectionHeading
-          eyebrow="MOMENTS FROM OUR JOURNEYS"
+          eyebrow="THE COUNTRY, UP CLOSE"
           title={
             <>
-              Every frame
+              A closer look
               <br />
-              <em>tells a story.</em>
+              <em>at Kyrgyzstan.</em>
             </>
           }
-          desc="Beautiful places, unhurried moments and the feeling of being somewhere extraordinary."
+          desc="The landscapes, stays and shared moments that give each journey its character."
           action={
             <a
               className="text-link"
@@ -1004,20 +1029,19 @@ function ReviewBrand({ platform }) {
   );
 }
 
+function reviewExcerpt(text, maxLength = 180) {
+  if (text.length <= maxLength) return text;
+  const excerpt = text.slice(0, maxLength);
+  return `${excerpt.slice(0, excerpt.lastIndexOf(" ")).trimEnd()}…`;
+}
+
 function Reviews() {
   const [active, setActive] = useState("site");
   const [instance, setInstance] = useState(null);
-  const subjects = [
-    "Mountains, people and a journey to remember",
-    "Carefully planned from the very first day",
-    "Culture, local life and remarkable scenery",
-    "Thoughtful details and a welcoming team",
-    "Beautiful places, yurts and unforgettable memories",
-    "The food, the people and the landscapes",
-    "Hospitality and family travel",
-    "A tour made truly personal",
-    "History, nature and local experiences",
-  ];
+  const [expandedReview, setExpandedReview] = useState(null);
+  useEffect(() => {
+    instance?.update();
+  }, [expandedReview, instance]);
   const handleTabs = (event, idx) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault();
@@ -1050,16 +1074,16 @@ function Reviews() {
               <em>Stories shared.</em>
             </h2>
             <p>
-              Explore guest experiences directly from Kyrgyzest and trusted
-              travel platforms.
+              First-hand accounts of the places, people and small details
+              travellers remember. Read each story at its original source.
             </p>
           </div>
           <div className="review-platform-proof">
             <I name="shield-check-line" />
             <span>
-              Source-first reviews
+              Words from our guests
               <br />
-              <small>No invented ratings or testimonials</small>
+              <small>Every story links to its original source</small>
             </span>
           </div>
         </div>
@@ -1102,8 +1126,8 @@ function Reviews() {
                     KYRGYZEST GUEST STORIES
                   </span>
                   <p>
-                    Nine experiences from travellers who explored Kyrgyzstan
-                    with our team. Read their original reviews on Kyrgyzest.
+                    First-hand accounts of travelling through Kyrgyzstan with
+                    our team. Each story opens at its original source.
                   </p>
                 </div>
                 <div className="review-nav carousel-arrows">
@@ -1135,8 +1159,9 @@ function Reviews() {
                   watchOverflow
                   breakpoints={{
                     640: { slidesPerView: 1.55, spaceBetween: 22 },
-                    950: { slidesPerView: 2.1, spaceBetween: 24 },
-                    1280: { slidesPerView: 2.78, spaceBetween: 24 },
+                    950: { slidesPerView: 2.6, spaceBetween: 24 },
+                    1140: { slidesPerView: 3.5, spaceBetween: 24 },
+                    1280: { slidesPerView: 4.2, spaceBetween: 22 },
                   }}
                 >
                   {reviews.map((r, i) => (
@@ -1150,30 +1175,74 @@ function Reviews() {
                             {String(i + 1).padStart(2, "0")} / 09
                           </span>
                         </div>
-                        <span className="review-topic">
-                          TRAVELLER EXPERIENCE
-                        </span>
-                        <h3>{subjects[i]}</h3>
-                        <p className="review-preview">
-                          Read the original experience shared by {r.name} after
-                          travelling with Kyrgyzest.
-                        </p>
-                        <a
-                          href="https://kyrgyzest.com/#reviews"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="review-link"
-                        >
-                          Read on Kyrgyzest <I name="arrow-right-up-line" />
-                        </a>
-                        <div className="review-author">
-                          <span className="author-avatar">
-                            {r.name.slice(0, 1)}
-                          </span>
-                          <span>
+                        <div className="review-person">
+                          <ImageWithFallback
+                            src={r.photo}
+                            className="review-person-photo"
+                            alt={`Photo from ${r.name}'s Kyrgyzest journey`}
+                          />
+                          <span className="review-person-copy">
                             <strong>{r.name}</strong>
                             <small>{r.place}</small>
                           </span>
+                        </div>
+                        <span className="review-topic">
+                          KYRGYZEST GUEST REVIEW
+                        </span>
+                        <div
+                          className={`review-preview ${
+                            expandedReview === r.name ? "is-hidden" : ""
+                          }`}
+                          aria-hidden={expandedReview === r.name}
+                        >
+                          <span>{reviewExcerpt(r.text)}</span>
+                        </div>
+                        <div
+                          id={`review-full-${i}`}
+                          className={`review-full-text ${
+                            expandedReview === r.name ? "is-expanded" : ""
+                          }`}
+                          aria-hidden={expandedReview !== r.name}
+                          tabIndex={expandedReview === r.name ? 0 : -1}
+                          role="region"
+                          aria-label={`Full review by ${r.name}`}
+                        >
+                          <div className="review-full-text-inner">
+                            <p>{r.text}</p>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          className="review-expand-button"
+                          aria-expanded={expandedReview === r.name}
+                          aria-controls={`review-full-${i}`}
+                          onClick={() =>
+                            setExpandedReview((current) =>
+                              current === r.name ? null : r.name,
+                            )
+                          }
+                        >
+                          {expandedReview === r.name
+                            ? "Show less"
+                            : "Read full review"}
+                          <I
+                            name={
+                              expandedReview === r.name
+                                ? "arrow-up-s-line"
+                                : "arrow-down-s-line"
+                            }
+                          />
+                        </button>
+                        <div className="review-source">
+                          <a
+                            href="https://kyrgyzest.com/#reviews"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="review-link"
+                            aria-label={`Read ${r.name}'s original review on Kyrgyzest`}
+                          >
+                            Original review <I name="arrow-right-up-line" />
+                          </a>
                         </div>
                       </article>
                     </SwiperSlide>
@@ -1220,8 +1289,8 @@ function Reviews() {
                   <em>straight from the source.</em>
                 </div>
                 <p>
-                  Google reviews are displayed on Google to keep every review
-                  linked to its author, original date and current rating.
+                  Explore the latest guest feedback, ratings and traveller
+                  photos on Google.
                 </p>
                 <a
                   href={GOOGLE_REVIEWS_URL}
@@ -1273,9 +1342,8 @@ function Reviews() {
                   Directly from travellers.
                 </h4>
                 <p>
-                  We can embed Tripadvisor's official reviews widget here after
-                  enabling it in the business Widget Center. No scraping or
-                  copied text is needed.
+                  Explore the latest guest reviews and traveller photos on the
+                  Kyrgyzest Tripadvisor listing.
                 </p>
                 <a
                   href={TRIPADVISOR_REVIEWS_URL}
@@ -1299,28 +1367,27 @@ function Story() {
         <div className="story-editorial" data-aos="fade-up">
           <Eyebrow>THE PEOPLE BEHIND THE JOURNEY</Eyebrow>
           <h2 className="section-title">
-            The Story
+            A personal
             <br />
-            <em>Behind Kyrgyzest</em>
+            <em>way of seeing home.</em>
           </h2>
           <p className="story-copy">
-            Kyrgyzest was born from a simple idea: to share the true beauty of
-            Kyrgyzstan with the same care, quality, and attention found in the
-            world’s most thoughtfully designed travel experiences.
+            I founded Kyrgyzest to share the country I call home — not simply
+            its landscapes, but the people, traditions and everyday moments
+            that give them meaning.
           </p>
           <p className="story-copy second">
-            My name is Jamilia. While I have been studying and living in London,
-            my heart has always remained in my home country, Kyrgyzstan.
-            Exposure to international standards, cultures, and travel
-            expectations showed me how powerful a well-crafted journey can be —
-            and inspired me to bring that level of excellence back home.
+            My name is Jamilia. Studying and living in London broadened my
+            perspective on travel; my roots in Kyrgyzstan keep every journey
+            grounded in local knowledge, careful planning and the hospitality
+            I would offer at home.
           </p>
           <Button
             variant="outline"
             href="https://kyrgyzest.com/about-us/"
             target="_blank"
           >
-            Read our story
+            Meet Kyrgyzest
           </Button>
         </div>
         <div
@@ -1330,7 +1397,7 @@ function Story() {
         >
           <img
             src={asset("jamilia-story.webp")}
-            alt="Photo provided for the Kyrgyzest story: a guest near a yurt surrounded by Kyrgyz mountains"
+            alt="A guest beside a yurt in the Kyrgyz mountains"
             className="story-img"
           />
           <div className="story-badge">
@@ -1344,36 +1411,12 @@ function Story() {
 const journalPosts = [
   {
     id: "grand",
-    label: "JOURNAL CONCEPT 01",
-    category: "The Journey",
-    date: "2026-08-18",
-    displayDate: "18 AUG 2026",
-    title: "Eight days with Kyrgyzest: the Grand Tour",
-    desc: "Nomadic culture, high-mountain lakes and alpine valleys on the signature Kyrgyzest journey.",
-    image: photos.galleryRoad,
+    category: "Real Kyrgyzest itinerary",
+    index: "01 / 03",
+    title: "Kyrgyzest Grand Tour",
+    desc: "Moderate walks, off-road rides and horseback riding, with stays in 4-star hotels, yurt camps and guesthouses.",
+    image: "https://kyrgyzest.com/wp-content/uploads/2025/12/photo_2026-08-26_14-46-29.jpg",
     href: "https://kyrgyzest.com/tours/kyrgyzest-grand-tour/",
-  },
-  {
-    id: "horse",
-    label: "JOURNAL CONCEPT 02",
-    category: "Experiences",
-    date: "2026-09-26",
-    displayDate: "26 SEP 2026",
-    title: "A journey on horseback through Kyrgyzstan",
-    desc: "A closer look at the landscapes and nomadic traditions behind the Horseback Adventure Tour.",
-    image: photos.trek,
-    href: "https://kyrgyzest.com/tours/horseback-adventure-tour/",
-  },
-  {
-    id: "autumn",
-    label: "JOURNAL CONCEPT 03",
-    category: "Seasonal travel",
-    date: "2026-10-12",
-    displayDate: "12 OCT 2026",
-    title: "The beauty of Kyrgyzstan in autumn",
-    desc: "A quieter season of mountain colour and authentic local experiences with Kyrgyzest.",
-    image: photos.galleryLife,
-    href: "https://kyrgyzest.com/tours/kyrgyzest-autumn-tour/",
   },
 ];
 function Blog() {
@@ -1381,15 +1424,15 @@ function Blog() {
     <section className="section journal-section" id="journal">
       <div className="max-container">
         <SectionHeading
-          eyebrow="THE KYRGYZEST JOURNAL"
+          eyebrow="REAL KYRGYZEST JOURNEYS · 01 / 03"
           title={
             <>
-              Stories from
+              One journey
               <br />
-              <em>the road.</em>
+              <em>to begin.</em>
             </>
           }
-          desc="A first look at the stories we want to share. These are editorial concepts based on real Kyrgyzest tours, not published blog posts."
+          desc="Starting with a real Kyrgyzest itinerary. We’ll add more stories as they’re ready."
         />
         <div className="journal-posts">
           {journalPosts.map((post, i) => (
@@ -1414,11 +1457,7 @@ function Blog() {
               <div className="journal-post-info">
                 <div className="journal-post-meta">
                   <span>{post.category}</span>
-                  <span className="journal-date">
-                    <I name="calendar-line" />{" "}
-                    <time dateTime={post.date}>{post.displayDate}</time>{" "}
-                    <span className="journal-draft-tag">DRAFT</span>
-                  </span>
+                  <span className="journal-post-index">{post.index}</span>
                 </div>
                 <h3>
                   <a href={post.href} target="_blank" rel="noopener noreferrer">
@@ -1432,7 +1471,7 @@ function Blog() {
                   rel="noopener noreferrer"
                   className="journal-post-link"
                 >
-                  Explore the real tour <I name="arrow-right-line" />
+                  Explore the itinerary <I name="arrow-right-line" />
                 </a>
               </div>
             </article>
@@ -1448,15 +1487,15 @@ function Faq() {
     <section className="section faq-section" id="faq">
       <div className="max-container faq-grid">
         <div data-aos="fade-up">
-          <Eyebrow>GOOD TO KNOW</Eyebrow>
+          <Eyebrow>BEFORE YOU SET OUT</Eyebrow>
           <h2 className="section-title">
-            A few things
+            The details,
             <br />
-            <em>before you go.</em>
+            <em>made clear.</em>
           </h2>
           <p className="section-description">
-            Answers to some of the questions we hear most often. For the full
-            details, our team is only a message away.
+            Practical answers for a more confident start. If you have a
+            question specific to your journey, our team is here to help.
           </p>
           <a
             className="faq-contact"
@@ -1464,7 +1503,7 @@ function Faq() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <I name="whatsapp-line" /> Still have a question? Ask us{" "}
+            <I name="whatsapp-line" /> Ask our team{" "}
             <I name="arrow-right-up-line" />
           </a>
         </div>
@@ -1529,15 +1568,16 @@ function Cta({ openBooking }) {
       <div className="cta-noise" aria-hidden="true" />
       <div className="max-container cta-inner">
         <div className="cta-copy" data-aos="fade-up">
-          <Eyebrow light>YOUR NEXT STORY AWAITS</Eyebrow>
+          <Eyebrow light>PLAN YOUR JOURNEY</Eyebrow>
           <h2>
-            Come for the views.
+            See more than
             <br />
-            <em>Leave with a feeling.</em>
+            <em>the scenery.</em>
           </h2>
           <p>
-            Tell us what you dream of seeing. We'll help create the Kyrgyzstan
-            experience you'll carry with you.
+            Tell us what draws you to Kyrgyzstan. Our team will help you choose
+            an itinerary or shape a private journey around the details that
+            matter to you.
           </p>
           <div className="cta-buttons">
             <Button icon="arrow-right-line" onClick={openBooking}>
@@ -1567,15 +1607,16 @@ function Footer() {
         <div className="footer-hero">
           <div className="footer-hero-copy">
             <span className="footer-kicker">
-              <I name="sun-line" /> EXPERIENCE THE SOUL OF KYRGYZSTAN
+              <I name="sun-line" /> MADE IN KYRGYZSTAN, SHARED WITH CARE
             </span>
             <h2>
-              Some places stay
+              The road may end.
               <br />
-              <em>with you forever.</em>
+              <em>The connection stays.</em>
             </h2>
             <p>
-              Discover landscapes, traditions and stories worth bringing home.
+              Let us introduce you to the landscapes, traditions and people of
+              our home.
             </p>
           </div>
           <a
@@ -1586,9 +1627,9 @@ function Footer() {
             aria-label="Talk with the Kyrgyzest team on WhatsApp"
           >
             <span>
-              Let's make it
+              Let's start
               <br />
-              your journey.
+              planning.
             </span>
             <I name="arrow-right-up-line" />
           </a>
@@ -1600,8 +1641,8 @@ function Footer() {
               alt="Kyrgyzest Tours original brand typography"
             />
             <p>
-              Thoughtfully designed journeys through the land we call home. Made
-              in Kyrgyzstan.
+              Local insight, considered journeys and a warm welcome in the
+              country we call home.
             </p>
             <div className="footer-social">
               <a
@@ -1635,7 +1676,7 @@ function Footer() {
               <a href="#about">About Kyrgyzest</a>
               <a href="#reviews">Guest stories</a>
               <a href="#faq">FAQ</a>
-              <a href="#journal">Journal</a>
+              <a href="#journal">Itinerary notes</a>
             </div>
             <div>
               <h4>LET'S CONNECT</h4>
