@@ -9,7 +9,7 @@
 .site-header .desktop-nav a{font-size:15px}
 /* Main video composition: no duplicate eyebrow, no overly bright bottom fade. */
 .hero h1{font-size:clamp(51px,5.65vw,82px);line-height:1.115;max-width:1020px;letter-spacing:-.061em;text-wrap:balance}
-.hero h1 em{font-weight:560;color:#fff4e9}
+.hero h1 em{font-weight:400;color:#bbbbbb}
 .hero-content{max-width:1020px;margin-top:0}
 .hero-topline{display:none!important}
 .hero-eyebrow{margin-bottom:22px}

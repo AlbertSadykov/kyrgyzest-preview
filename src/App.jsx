@@ -279,17 +279,15 @@ function VideoHero({ openBooking }) {
       <div className="hero-inner max-container">
         <div className="hero-main-grid">
           <div className="hero-content">
-            <p className="hero-eyebrow">
+            {/* <p className="hero-eyebrow">
               <I name="sun-line" /> YOUR JOURNEY INTO KYRGYZSTAN
-            </p>
+            </p> */}
             <h1>
-              Discover Kyrgyzstan
+              Travel Beyond the Ordinary.
               <br />
-              <em>beyond the expected.</em>
+              <em>Experience the Soul of Kyrgyzstan.</em>
             </h1>
-            <p className="hero-tagline">
-              A country best experienced from the inside.
-            </p>
+           
             <p className="hero-text">
               Thoughtfully planned small-group and private journeys, shaped by
               local knowledge and the warmth of Kyrgyz hospitality.
@@ -302,9 +300,9 @@ function VideoHero({ openBooking }) {
                 Plan a private journey <I name="arrow-right-line" />
               </button>
             </div>
-            <a href="#intro" className="hero-scroll-inline">
+            {/* <a href="#intro" className="hero-scroll-inline">
               <I name="arrow-down-line" /> SCROLL TO EXPLORE <span />
-            </a>
+            </a> */}
           </div>
           <aside
             className="hero-aside hero-featured-tour"
