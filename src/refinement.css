@@ -1,7 +1,7 @@
 /* KYRGYZEST / ART DIRECTION V2
    The restrained shapes and spacing are shared tokens. No icon font substitutes.
 */
-:root{--orange:#ff700f;--brown:#552312;--ink:#192421;--cream:#faf8f5;--soft:#f3f0ea;--line:#e6e3dd;--heading:"Manrope",sans-serif;--body:"Gilroy","Manrope",sans-serif}
+:root{--orange:#ff700f;--brown:#552312;--ink:#161616;--cream:#faf8f5;--soft:#f3f0ea;--line:#e6e3dd;--heading:"Manrope",sans-serif;--body:"Gilroy","Manrope",sans-serif}
 body{background:#faf8f5}
 .max-container{width:min(1380px,calc(100% - 80px))}
 .section{padding:112px 0}

@@ -405,3 +405,47 @@
     transition: none !important;
   }
 }
+
+
+
+
+.footer-v6 .footer-plan-link,
+.footer-v6 .footer-plan-link span {
+  color: #fff !important;
+}
+
+:is(
+    .inquiry-card,
+    .intro-bridge,
+    .section-tours,
+    .why-section,
+    .destinations-section,
+    .gallery-section,
+    .map-section,
+    .story-section,
+    .journal-section,
+    .faq-section
+  )
+  .ui-button-brand,
+.inquiry-card .inquiry-submit {
+  color: #fff !important;
+}
+
+.section-tours .tour-year,
+.section-tours .tour-photo-bottom,
+.section-tours .tour-photo-bottom *,
+.destinations-section .dest-caption,
+.destinations-section .dest-caption *,
+.gallery-slide > span {
+  color: #fff !important;
+}
+
+.tour-photo-bottom .tour-round-arrow,
+.tour-photo-bottom .tour-round-arrow * {
+  color: #161616 !important;
+}
+
+.tour-card:hover .tour-photo-bottom .tour-round-arrow,
+.tour-card:hover .tour-photo-bottom .tour-round-arrow * {
+  color: #fff !important;
+}

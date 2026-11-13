@@ -37,30 +37,128 @@ html,body,button,input,textarea,select { font-family: var(--body); }
 .footer.footer-v6 {
  background:#f6f3ee !important;
  background-image:linear-gradient(180deg,#faf8f5 0%,#f6f3ee 38%,#f1eee8 100%) !important;
- color:#222922 !important;
+ color:#161616 !important;
 }
 .footer-v6 .footer-hero { border-bottom-color:#ddd8d0 !important; }
-.footer-v6 .footer-kicker { color:#a95c33 !important; }
+.footer-v6 .footer-kicker { color:#161616 !important; }
 .footer-v6 .footer-kicker i {color:#d76e2e !important;}
-.footer-v6 .footer-hero h2 { color:#252820 !important; }
-.footer-v6 .footer-hero h2 em {color:#b9673a !important;}
-.footer-v6 .footer-hero-copy>p {color:#6f706b !important;}
+.footer-v6 .footer-hero h2 { color:#161616 !important; }
+.footer-v6 .footer-hero h2 em {color:#161616 !important;}
+.footer-v6 .footer-hero-copy>p {color:#161616 !important;}
 .footer-v6 .footer-plan-link {color:#fff !important;background:#552312 !important;border-color:#552312 !important;}
 .footer-v6 .footer-plan-link:hover {background:#79402a !important;border-color:#79402a !important;}
 .footer-v6 .footer-plan-link i {color:#ffa66e !important;}
 .footer-v6 .footer-brand img {filter:none !important;object-fit:contain !important;}
-.footer-v6 .footer-brand p {color:#71746e !important;}
+.footer-v6 .footer-brand p {color:#161616 !important;}
 .footer-v6 .footer-social a {background:#fff !important;color:#552312 !important;border:1px solid #e1d9d0 !important;}
 .footer-v6 .footer-social a:hover {background:#ffeadb !important;border-color:#edae86 !important;}
-.footer-v6 .footer-nav h4 {color:#a76340 !important;}
-.footer-v6 .footer-nav a,.footer-v6 .footer-nav span {color:#555d54 !important;}
-.footer-v6 .footer-nav a:hover {color:#ad5e30 !important;}
+.footer-v6 .footer-nav h4 {color:#161616 !important;}
+.footer-v6 .footer-nav a,.footer-v6 .footer-nav span {color:#161616 !important;}
+.footer-v6 .footer-nav a:hover {color:#161616 !important;}
 .footer-v6 .footer-nav span i {color:#be754c !important;}
-.footer-v6 .footer-bottom {border-top-color:#dcd6cf !important;color:#798078 !important;}
-.footer-v6 .footer-bottom>a {color:#353a34 !important;}
-.footer-v6 .footer-payments-note {color:#77736d !important;}
+.footer-v6 .footer-bottom {border-top-color:#dcd6cf !important;color:#161616 !important;}
+.footer-v6 .footer-bottom>a {color:#161616 !important;}
+.footer-v6 .footer-payments-note {color:#161616 !important;}
 .footer-v6 .payment-brand {background:#fff;border:1px solid #e5dfd8;box-shadow:0 4px 14px rgba(34,27,20,.035);}
 .footer-v6 .footer-main {padding-top:65px;}
+.footer-v6 .footer-social a.footer-social-instagram,
+.footer-v6 .footer-social a.footer-social-whatsapp {
+ align-items:center;
+ background:#fff !important;
+ border:1px solid #e4ded5 !important;
+ border-radius:999px;
+ box-shadow:0 5px 16px rgba(37,25,17,.07);
+ color:#161616 !important;
+ display:inline-flex;
+ font-size:13px;
+ font-weight:750;
+ gap:9px;
+ height:46px;
+ justify-content:flex-start;
+ padding:6px 15px 6px 7px;
+ transition:box-shadow .2s ease,transform .2s ease,border-color .2s ease;
+ width:auto;
+}
+.footer-v6 .footer-social a.footer-social-instagram > i,
+.footer-v6 .footer-social a.footer-social-whatsapp > i {
+ align-items:center;
+ border-radius:50%;
+ font-weight:400;
+ color:#fff;
+ display:grid;
+ flex:0 0 32px;
+ font-size:17px;
+ height:32px;
+ justify-items:center;
+ width:32px;
+}
+.footer-v6 .footer-social a.footer-social-instagram > i {
+ background:linear-gradient(135deg,#feda75 0%,#fa7e1e 30%,#d62976 58%,#962fbf 78%,#4f5bd5 100%);
+}
+.footer-v6 .footer-social a.footer-social-whatsapp > i {
+ background:#25d366;
+}
+.footer-v6 .footer-social a.footer-social-instagram:hover,
+.footer-v6 .footer-social a.footer-social-whatsapp:hover {
+ border-color:#d6cbbd !important;
+ box-shadow:0 9px 22px rgba(37,25,17,.13);
+ transform:translateY(-2px);
+}
+.footer-v6 .footer-nav a.footer-phone {
+ align-items:center;
+ display:flex;
+ gap:8px;
+ line-height:1;
+ white-space:nowrap;
+}
+.footer-v6 .footer-phone img {
+ display:block;
+ flex:0 0 22px;
+ height:24px;
+ object-fit:contain;
+ width:22px;
+}
+.footer-v6 .footer-nav a.footer-phone > span {
+ display:block;
+ line-height:1.35;
+ margin:0;
+}
+.floating-scroll-top {
+ align-items:center;
+ background:#552312;
+ border:1px solid rgba(255,255,255,.55);
+ border-radius:50%;
+ bottom:24px;
+ box-shadow:0 10px 28px rgba(37,25,17,.24);
+ color:#fff;
+ cursor:pointer;
+ display:grid;
+ font-size:22px;
+ height:52px;
+ justify-items:center;
+ padding:0;
+ position:fixed;
+ right:24px;
+ transition:background .2s ease,transform .2s ease;
+ width:52px;
+ z-index:90;
+}
+.floating-scroll-top:hover {
+ background:#79402a;
+ transform:translateY(-3px);
+}
+.floating-scroll-top:focus-visible {
+ outline:3px solid #d76e2e;
+ outline-offset:3px;
+}
+@media(max-width:580px) {
+ .floating-scroll-top {
+  bottom:18px;
+  height:48px;
+  right:16px;
+  width:48px;
+ }
+}
 /* Country mask stays beneath pins; outline remains crisp at any map zoom. */
 .leaflet-pane.kg-focus-pane,.leaflet-pane.kg-border-pane {pointer-events:none;}
 .kg-country-border {stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;}

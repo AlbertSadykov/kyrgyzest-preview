@@ -1,7 +1,7 @@
 /* Kyrgyzest UX refinement / 2026-10-23
    Design tokens follow the original brand. This layer overrides the inherited prototype,
    keeping the functioning components while correcting animation, hero, header and gallery. */
-:root{--orange:#ff700f;--brown:#552312;--ink:#242820;--heading:'Manrope',sans-serif;--ease-luxe:cubic-bezier(.2,.72,.18,1);--radius:26px}
+:root{--orange:#ff700f;--brown:#552312;--ink:#161616;--heading:'Manrope',sans-serif;--ease-luxe:cubic-bezier(.2,.72,.18,1);--radius:26px}
 html{scroll-padding-top:84px}body{background:#fcfaf7}
 .max-container{width:min(1380px,calc(100% - 68px))}
 .section{position:relative;padding:clamp(86px,8vw,132px) 0}

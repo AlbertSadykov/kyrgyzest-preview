@@ -24,6 +24,7 @@ const asset = (filename) => publicFile(`assets/${filename}`);
 
 const ORIGINAL = asset("kyrgyzest-original-logo.png");
 const WHITE_LETTERING = asset("kyrgyzest-logo-white-lettering.png");
+const OSHKA_LOGO = asset("oshka-logo.svg");
 const PHONE = "996551057666";
 const SITE = "https://kyrgyzest.com/";
 const socials = {
@@ -1645,19 +1646,23 @@ function Footer() {
             <div className="footer-social">
               <a
                 href={socials.instagram}
+                className="footer-social-instagram"
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <I name="instagram-line" />
+                <span>Instagram</span>
               </a>
               <a
                 href={socials.whatsapp}
+                className="footer-social-whatsapp"
                 aria-label="WhatsApp"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <I name="whatsapp-line" />
+                <span>WhatsApp</span>
               </a>
             </div>
           </div>
@@ -1667,7 +1672,6 @@ function Footer() {
               <a href="#tours">Our tours</a>
               <a href="#destinations">Destinations</a>
               <a href="#gallery">Gallery</a>
-              <a href="#map">Tour map</a>
             </div>
             <div>
               <h4>THE COMPANY</h4>
@@ -1681,7 +1685,10 @@ function Footer() {
               <a href="mailto:kyrgyzest.tour@gmail.com">
                 kyrgyzest.tour@gmail.com
               </a>
-              <a href="tel:+996551057666">+996 551 057 666</a>
+              <a className="footer-phone" href="tel:+996551057666">
+                <img src={OSHKA_LOGO} alt="" />
+                <span>+996 551 057 666</span>
+              </a>
               <a
                 href={socials.instagram}
                 target="_blank"
@@ -1699,9 +1706,6 @@ function Footer() {
           <span>
             © {new Date().getFullYear()} KYRGYZEST TOURS · ALL RIGHTS RESERVED.
           </span>
-          <a href="#home">
-            BACK TO TOP <I name="arrow-up-line" />
-          </a>
           <div
             className="footer-payments"
             aria-label="Planned payment method brands; online payments not yet enabled"
@@ -1939,7 +1943,8 @@ function Lightbox({ item, onClose, prev, next }) {
 }
 export default function App() {
   const [booking, setBooking] = useState(false),
-    [photo, setPhoto] = useState(null);
+    [photo, setPhoto] = useState(null),
+    [showScrollTop, setShowScrollTop] = useState(false);
   useEffect(() => {
     AOS.init({
       duration: 1050,
@@ -1955,6 +1960,16 @@ export default function App() {
     return () => {
       window.removeEventListener("load", refresh);
     };
+  }, []);
+  useEffect(() => {
+    const updateScrollTopVisibility = () =>
+      setShowScrollTop(window.scrollY > 420);
+    updateScrollTopVisibility();
+    window.addEventListener("scroll", updateScrollTopVisibility, {
+      passive: true,
+    });
+    return () =>
+      window.removeEventListener("scroll", updateScrollTopVisibility);
   }, []);
   const openBooking = useCallback(() => setBooking(true), []),
     closeBooking = useCallback(() => setBooking(false), []),
@@ -1976,15 +1991,23 @@ export default function App() {
         <Tours />
         <Why />
         <Destinations />
-        <MapSection />
         <Gallery openPhoto={setPhoto} />
         <Reviews />
         <Story />
         <Blog />
         <Faq />
-        <Cta openBooking={openBooking} />
       </main>
       <Footer />
+      {showScrollTop && (
+        <button
+          type="button"
+          className="floating-scroll-top"
+          aria-label="Back to top"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          <I name="arrow-up-line" />
+        </button>
+      )}
       <BookingModal open={booking} onClose={closeBooking} />
       <Lightbox
         item={photo !== null ? gallery[photo] : null}

@@ -1,7 +1,7 @@
 /* KYRGYZEST v5 · editorial polish, 2026-10-24
    The transparent header remains over film. Only the header veil is dark.
    User supplied portrait and original brand lettering are kept intact. */
-:root{--polish-ink:#242820;--polish-orange:#ff700f;--polish-surface:#fcfaf7}
+:root{--polish-ink:#161616;--polish-orange:#ff700f;--polish-surface:#fcfaf7}
 .site-header .header-logo img{filter:none!important;outline:0!important;box-shadow:none!important;background:transparent!important}
 .site-header .header-logo{border:0!important;outline:0!important;background:none!important;box-shadow:none!important}
 .site-header .header-inner,.site-header.is-scrolled .header-inner{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
