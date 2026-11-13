@@ -117,7 +117,7 @@ function SectionHeading({ eyebrow, title, desc, action, light = false }) {
   return (
     <div className="section-heading" data-aos="fade-up">
       <div>
-        <Eyebrow light={light}>{eyebrow}</Eyebrow>
+        {eyebrow && <Eyebrow light={light}>{eyebrow}</Eyebrow>}
         <h2 className={`section-title ${light ? "text-white" : ""}`}>
           {title}
         </h2>
@@ -212,25 +212,48 @@ function Header({ openBooking }) {
     </header>
   );
 }
-function VideoHero({ openBooking }) {
+function VideoHero() {
   const [muted, setMuted] = useState(false),
     [playing, setPlaying] = useState(false),
-    [unavailable, setUnavailable] = useState(false);
-  const playerRef = useRef(null);
+    [unavailable, setUnavailable] = useState(false),
+    [fullscreen, setFullscreen] = useState(false),
+    [fullscreenError, setFullscreenError] = useState("");
+  const playerRef = useRef(null),
+    soundRequestedRef = useRef(false);
   useEffect(() => {
     const video = playerRef.current;
     if (!video) return;
 
     video.play().catch(() => {
+      if (soundRequestedRef.current) return;
       video.muted = true;
       setMuted(true);
       video.play().catch(() => setUnavailable(true));
     });
   }, []);
+  useEffect(() => {
+    const video = playerRef.current;
+    if (!video) return;
+    const updateFullscreen = () => {
+      setFullscreen(document.fullscreenElement === video);
+      setFullscreenError("");
+    };
+    const onWebkitBeginFullscreen = () => setFullscreen(true);
+    const onWebkitEndFullscreen = () => setFullscreen(false);
+    document.addEventListener("fullscreenchange", updateFullscreen);
+    video.addEventListener("webkitbeginfullscreen", onWebkitBeginFullscreen);
+    video.addEventListener("webkitendfullscreen", onWebkitEndFullscreen);
+    return () => {
+      document.removeEventListener("fullscreenchange", updateFullscreen);
+      video.removeEventListener("webkitbeginfullscreen", onWebkitBeginFullscreen);
+      video.removeEventListener("webkitendfullscreen", onWebkitEndFullscreen);
+    };
+  }, []);
   const toggleSound = () => {
     const video = playerRef.current;
     if (!video) return;
     video.muted = !muted;
+    soundRequestedRef.current = !video.muted;
     setMuted(video.muted);
     if (!video.muted && video.paused) {
       video.play().catch(() => {
@@ -248,8 +271,37 @@ function VideoHero({ openBooking }) {
       video.pause();
     }
   };
+  const toggleFullscreen = async () => {
+    const video = playerRef.current;
+    if (!video) return;
+    setFullscreenError("");
+    try {
+      if (document.fullscreenElement === video) {
+        await document.exitFullscreen();
+        return;
+      }
+      soundRequestedRef.current = true;
+      video.muted = false;
+      video.volume = 1;
+      setMuted(false);
+      let fullscreenRequest;
+      if (typeof video.requestFullscreen === "function") {
+        fullscreenRequest = video.requestFullscreen();
+      } else if (typeof video.webkitEnterFullscreen === "function") {
+        video.webkitEnterFullscreen();
+      } else {
+        setFullscreenError("Full screen is not supported by this browser.");
+        return;
+      }
+      const playbackRequest = video.play();
+      await Promise.all([fullscreenRequest, playbackRequest]);
+    } catch (error) {
+      console.error("Could not open the hero video with sound in full screen.", error);
+      setFullscreenError("Could not open the video with sound. Please try again.");
+    }
+  };
   return (
-    <section id="home" className="hero">
+    <section id="home" className="hero hero-minimal">
       {unavailable && (
         <ImageWithFallback
           src={photos.hero}
@@ -269,8 +321,9 @@ function VideoHero({ openBooking }) {
           muted={muted}
           loop
           playsInline
+          controls={fullscreen}
           preload="auto"
-          aria-hidden="true"
+          aria-label="Kyrgyzest travel film"
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
           onError={() => setUnavailable(true)}
@@ -278,84 +331,15 @@ function VideoHero({ openBooking }) {
       </div>
       <div className="hero-shade" />
       <div className="hero-inner max-container">
-        <div className="hero-main-grid">
-          <div className="hero-content">
-            {/* <p className="hero-eyebrow">
-              <I name="sun-line" /> YOUR JOURNEY INTO KYRGYZSTAN
-            </p> */}
-            <h1>
-              Travel Beyond the Ordinary.
-              <br />
-              <em>Experience the Soul of Kyrgyzstan.</em>
-            </h1>
-           
-            <p className="hero-text">
-              Thoughtfully planned small-group and private journeys, shaped by
-              local knowledge and the warmth of Kyrgyz hospitality.
-            </p>
-            <div className="hero-buttons">
+        <div className="hero-main-grid hero-minimal-grid">
+          <div className="hero-content hero-minimal-content">
+            <h1>Travel beyond the ordinary.</h1>
+            <div className="hero-buttons hero-minimal-buttons">
               <Button href="#tours" icon="arrow-right-up-line">
-                Explore the journeys
+                Explore journeys
               </Button>
-              <button className="hero-secondary-cta" onClick={openBooking}>
-                Plan a private journey <I name="arrow-right-line" />
-              </button>
             </div>
-            {/* <a href="#intro" className="hero-scroll-inline">
-              <I name="arrow-down-line" /> SCROLL TO EXPLORE <span />
-            </a> */}
           </div>
-          <aside
-            className="hero-aside hero-featured-tour"
-            aria-label="Featured Kyrgyzest tour"
-          >
-            <div className="hero-aside-line" />
-            <span className="hero-featured-eyebrow">
-              <I name="sparkling-line" /> FEATURED JOURNEY
-            </span>
-            <a
-              className="hero-featured-photo"
-              href="https://kyrgyzest.com/tours/kyrgyzest-autumn-tour/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ImageWithFallback
-                src={photos.autumn}
-                alt="Kyrgyzest Autumn Tour — original tour photography"
-                loading="eager"
-              />
-              <span className="hero-featured-photo-arrow">
-                <I name="arrow-right-up-line" />
-              </span>
-            </a>
-            <div className="hero-featured-details">
-              <div className="hero-featured-meta">
-                <span>
-                  <I name="calendar-event-line" /> October
-                </span>
-                <span>
-                  <I name="time-line" /> 7 days
-                </span>
-              </div>
-              <h2>
-                Kyrgyzest
-                <br />
-                Autumn Tour
-              </h2>
-              <p>
-                A week among alpine landscapes, local traditions and autumn
-                light.
-              </p>
-              <a
-                className="hero-featured-link"
-                href="https://kyrgyzest.com/tours/kyrgyzest-autumn-tour/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Explore this tour <I name="arrow-right-up-line" />
-              </a>
-            </div>
-          </aside>
         </div>
         <div className="hero-bottom">
           <div className="hero-location">
@@ -363,9 +347,6 @@ function VideoHero({ openBooking }) {
             <span>KYRGYZSTAN · CENTRAL ASIA</span>
           </div>
           <div className="hero-video-controls">
-            <span className="hero-video-note">
-              {playing ? "THE KYRGYZSTAN FILM" : "WATCH THE JOURNEY"}
-            </span>
             <button
               className="hero-sound-toggle"
               aria-label={muted ? "Turn video sound on" : "Mute video"}
@@ -374,7 +355,7 @@ function VideoHero({ openBooking }) {
               onClick={toggleSound}
             >
               <I name={muted ? "volume-mute-line" : "volume-up-line"} />
-              {muted && <span>Enable sound</span>}
+              {muted}
             </button>
             <button
               aria-label={playing ? "Pause video" : "Play video"}
@@ -383,15 +364,19 @@ function VideoHero({ openBooking }) {
             >
               <I name={playing ? "pause-line" : "play-line"} />
             </button>
-            <a
-              href="https://drive.google.com/file/d/1uwNoXiyyjOwHhcj_oEQc5obvoadlbz1-/view"
-              aria-label="Watch original film on Google Drive"
-              title="Watch original film"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              aria-label="Open video in full screen"
+              aria-pressed={fullscreen}
+              title="Open video in full screen"
+              onClick={toggleFullscreen}
             >
-              <I name="external-link-line" />
-            </a>
+              <I name="fullscreen-line" />
+            </button>
+            {fullscreenError && (
+              <span className="hero-fullscreen-error" role="status">
+                {fullscreenError}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -466,23 +451,19 @@ function Tours() {
     <section id="tours" className="section section-tours">
       <div className="max-container">
         <SectionHeading
-          eyebrow="SMALL-GROUP & PRIVATE JOURNEYS"
-          title={
-            <>
-              Find your way
-              <br />
-              <em>into Kyrgyzstan.</em>
-            </>
-          }
-          desc="Choose a small-group journey, set out on horseback or plan a private itinerary around your own pace. Each route is shaped by local knowledge and thoughtful detail."
+          eyebrow="OUR JOURNEYS"
+          title="Find your journey."
           action={
-            <div className="carousel-arrows">
-              <button ref={prev} aria-label="Previous tour">
-                <I name="arrow-left-line" />
-              </button>
-              <button ref={next} aria-label="Next tour">
-                <I name="arrow-right-line" />
-              </button>
+            <div className="tour-carousel-controls">
+              <span>Swipe or drag</span>
+              <div className="carousel-arrows">
+                <button ref={prev} aria-label="Previous tour">
+                  <I name="arrow-left-line" />
+                </button>
+                <button ref={next} aria-label="Next tour">
+                  <I name="arrow-right-line" />
+                </button>
+              </div>
             </div>
           }
         />
@@ -496,8 +477,8 @@ function Tours() {
           onSwiper={setSwiper}
           breakpoints={{
             560: { slidesPerView: 1.7, spaceBetween: 20 },
-            840: { slidesPerView: 2.25, spaceBetween: 24 },
-            1140: { slidesPerView: 3, spaceBetween: 26 },
+            840: { slidesPerView: 2.2, spaceBetween: 24 },
+            1140: { slidesPerView: 3.5, spaceBetween: 26 },
           }}
         >
           {tours.map((tour) => (
@@ -521,7 +502,6 @@ function Tours() {
                     <span className="tour-year">{tour.season}</span>
                   </div>
                   <div className="tour-photo-bottom">
-                    <span>{tour.kicker}</span>
                     <span className="tour-round-arrow">
                       <I name="arrow-right-up-line" />
                     </span>
@@ -529,10 +509,6 @@ function Tours() {
                 </div>
                 <div className="tour-info">
                   <h3>{tour.title}</h3>
-                  <p>{tour.sub}</p>
-                  <span className="tour-read">
-                    Explore this journey <I name="arrow-right-line" />
-                  </span>
                 </div>
               </a>
             </SwiperSlide>
@@ -554,28 +530,6 @@ function Tours() {
   );
 }
 function Why() {
-  const perks = [
-    {
-      icon: "global-line",
-      title: "Considered from the first conversation",
-      desc: "Talk through your plans with our team before you book. For private travel, we shape the route around your interests and preferred pace.",
-    },
-    {
-      icon: "compass-3-line",
-      title: "Local knowledge, shared generously",
-      desc: "Experienced guides and drivers bring context to the places, traditions and people you encounter.",
-    },
-    {
-      icon: "group-line",
-      title: "A more personal way to travel",
-      desc: "Small groups leave room for conversation, connection and the moments that cannot be planned.",
-    },
-    {
-      icon: "award-line",
-      title: "Comfort, thoughtfully considered",
-      desc: "We choose the best available stays for each location and reliable transport for the route, including in remote regions.",
-    },
-  ];
   return (
     <section className="section why-section" id="about">
       <div className="max-container why-grid">
@@ -585,49 +539,35 @@ function Why() {
             alt="Kyrgyzest travellers together on a trip"
             className="why-image"
           />
-          <div className="why-image-caption">
-            <I name="double-quotes-l" />
-            <span>The best journeys make a country feel personal.</span>
-          </div>
         </div>
         <div className="why-content" data-aos="fade-up">
-          <Eyebrow>THE KYRGYZEST DIFFERENCE</Eyebrow>
-          <h2 className="section-title">
-            The details matter.
+          <h2 className="section-title why-title">
+            Where It All
             <br />
-            <em>Every step of the way.</em>
+            <em>Began</em>
           </h2>
-          <p className="why-lead">
-            From your first conversation to the final transfer, our team brings
-            together local knowledge, thoughtful planning and the warmth of a
-            genuinely personal welcome.
-          </p>
-          <div className="why-benefits">
-            {perks.map((p, i) => (
-              <div
-                className="why-benefit"
-                key={p.title}
-                data-aos="fade-up"
-                data-aos-delay={i * 65}
-              >
-                <div className="why-benefit-icon">
-                  <I name={p.icon} />
-                </div>
-                <div>
-                  <h3>{p.title}</h3>
-                  <p>{p.desc}</p>
-                </div>
-              </div>
-            ))}
+          <div className="why-copy-group">
+            <p className="why-copy why-intro">
+              <strong>Kyrgyzest</strong> was born from a simple idea — to share
+              the Kyrgyzstan we grew up with: warm-hearted people, untouched
+              nature, ancient traditions, and moments that stay with you long
+              after the journey ends.
+            </p>
+            <p className="why-copy">
+              Founded in London and deeply rooted in Kyrgyz heritage, Kyrgyzest
+              combines international-level organisation with genuine local
+              hospitality. We work exclusively with trusted guides, experienced
+              drivers, and local families who carry the true spirit of Kyrgyz
+              culture in everything they do.
+            </p>
           </div>
-          <Button
-            variant="outline"
-            icon="arrow-right-line"
-            href="https://kyrgyzest.com/about-us/"
-            target="_blank"
-          >
-            Our story
-          </Button>
+          <p className="why-copy why-signoff">
+            For us, travel is deeply personal.{" "}
+            <strong>
+              Every guest arrives as a traveller — and leaves as part of our
+              family.
+            </strong>
+          </p>
         </div>
       </div>
     </section>
@@ -1060,56 +1000,23 @@ function Reviews() {
   return (
     <section className="section review-section" id="reviews">
       <div className="review-scene" aria-hidden="true">
-        <img src={photos.galleryWide} alt="" loading="lazy" />
+        {/* <img src={photos.galleryWide} alt="" loading="lazy" /> */}
       </div>
       <div className="review-ornament-pattern" aria-hidden="true" />
       <div className="max-container">
         <div className="review-platform-heading">
           <div>
-            <Eyebrow light>REAL STORIES, REAL PEOPLE</Eyebrow>
+            <Eyebrow light>TESTIMONIALS</Eyebrow>
             <h2>
               Journeys remembered.
               <br />
               <em>Stories shared.</em>
             </h2>
-            <p>
-              First-hand accounts of the places, people and small details
-              travellers remember. Read each story at its original source.
-            </p>
+            
           </div>
-          <div className="review-platform-proof">
-            <I name="shield-check-line" />
-            <span>
-              Words from our guests
-              <br />
-              <small>Every story links to its original source</small>
-            </span>
-          </div>
+          
         </div>
-        <div
-          className="review-tabs"
-          role="tablist"
-          aria-label="Choose reviews source"
-        >
-          {reviewPlatforms.map((p, i) => (
-            <button
-              type="button"
-              role="tab"
-              id={"review-tab-" + p.id}
-              aria-controls="review-active-panel"
-              aria-selected={active === p.id}
-              tabIndex={active === p.id ? 0 : -1}
-              key={p.id}
-              className={"review-tab " + (active === p.id ? "is-active" : "")}
-              onClick={() => setActive(p.id)}
-              onKeyDown={(e) => handleTabs(e, i)}
-            >
-              <ReviewBrand platform={p.id} />
-              <span className="review-tab-title">{p.label}</span>
-              {p.count && <span className="review-tab-count">{p.count}</span>}
-            </button>
-          ))}
-        </div>
+     
         <div
           id="review-active-panel"
           role="tabpanel"
@@ -1120,15 +1027,7 @@ function Reviews() {
           {active === "site" && (
             <div className="reviews-v10">
               <div className="reviews-v10-intro">
-                <div>
-                  <span className="review-panel-kicker">
-                    KYRGYZEST GUEST STORIES
-                  </span>
-                  <p>
-                    First-hand accounts of travelling through Kyrgyzstan with
-                    our team. Each story opens at its original source.
-                  </p>
-                </div>
+              
                 <div className="review-nav carousel-arrows">
                   <button
                     type="button"
@@ -1233,15 +1132,7 @@ function Reviews() {
                           />
                         </button>
                         <div className="review-source">
-                          <a
-                            href="https://kyrgyzest.com/#reviews"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="review-link"
-                            aria-label={`Read ${r.name}'s original review on Kyrgyzest`}
-                          >
-                            Original review <I name="arrow-right-up-line" />
-                          </a>
+                     
                         </div>
                       </article>
                     </SwiperSlide>
@@ -1410,8 +1301,8 @@ function Story() {
 const journalPosts = [
   {
     id: "grand",
-    category: "Real Kyrgyzest itinerary",
-    index: "01 / 03",
+
+   
     title: "Kyrgyzest Grand Tour",
     desc: "Moderate walks, off-road rides and horseback riding, with stays in 4-star hotels, yurt camps and guesthouses.",
     image: "https://kyrgyzest.com/wp-content/uploads/2025/12/photo_2026-08-26_14-46-29.jpg",
@@ -1423,7 +1314,6 @@ function Blog() {
     <section className="section journal-section" id="journal">
       <div className="max-container">
         <SectionHeading
-          eyebrow="REAL KYRGYZEST JOURNEYS · 01 / 03"
           title={
             <>
               One journey
@@ -1470,7 +1360,7 @@ function Blog() {
                   rel="noopener noreferrer"
                   className="journal-post-link"
                 >
-                  Explore the itinerary <I name="arrow-right-line" />
+                  Read more <I name="arrow-right-line" />
                 </a>
               </div>
             </article>
@@ -1941,10 +1831,132 @@ function Lightbox({ item, onClose, prev, next }) {
     </div>
   );
 }
+function MinimalHomepage({ openBooking }) {
+  const journeys = tours.slice(0, 3);
+
+  return (
+    <div className="minimal-homepage">
+      <header className="minimal-header">
+        <a href="#minimal-home" aria-label="Kyrgyzest Tours home">
+          <img src={WHITE_LETTERING} alt="Kyrgyzest Tours" />
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="#minimal-journeys">Journeys</a>
+          <a href="#minimal-about">About</a>
+          <a href="#minimal-contact">Contact</a>
+          <a className="minimal-version-link" href={window.location.pathname}>
+            Original version
+          </a>
+        </nav>
+      </header>
+
+      <main>
+        <section
+          id="minimal-home"
+          className="minimal-hero"
+          style={{ backgroundImage: `url("${asset("kyrgyzest-yurt-camp-dusk.png")}")` }}
+        >
+          <div className="minimal-hero-content">
+            <p className="minimal-eyebrow">Kyrgyzstan · journeys with locals</p>
+            <h1>A little closer<br />to Kyrgyzstan.</h1>
+            <p className="minimal-hero-copy">
+              Thoughtful journeys through the mountains, made personal by the
+              people who call them home.
+            </p>
+            <a className="minimal-primary-link" href="#minimal-journeys">
+              Find your journey <I name="arrow-down-line" />
+            </a>
+          </div>
+          <span className="minimal-hero-caption">42°52′ N&nbsp; 74°36′ E · KYRGYZSTAN</span>
+        </section>
+
+        <section id="minimal-journeys" className="minimal-journeys">
+          <div className="minimal-section-intro">
+            <p className="minimal-eyebrow">A few ways to explore</p>
+            <h2>Choose your journey.</h2>
+          </div>
+          <div className="minimal-journey-grid">
+            {journeys.map((tour, index) => (
+              <a className="minimal-journey-card" href={tour.href} key={tour.id}>
+                <div className="minimal-journey-image">
+                  <ImageWithFallback
+                    src={tour.img}
+                    alt={tour.title}
+                  />
+                  <span>0{index + 1}</span>
+                </div>
+                <div className="minimal-journey-details">
+                  <div>
+                    <h3>{tour.title}</h3>
+                    <p>{tour.days} · {tour.season}</p>
+                  </div>
+                  <I name="arrow-up-right-line" />
+                </div>
+              </a>
+            ))}
+          </div>
+          <a
+            className="minimal-text-link"
+            href="https://kyrgyzest.com/tours/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View all journeys <I name="arrow-right-line" />
+          </a>
+        </section>
+
+        <section id="minimal-about" className="minimal-about">
+          <div className="minimal-about-image">
+            <ImageWithFallback
+              src={asset("jamilia-story.webp")}
+              alt="Jamilia, founder of Kyrgyzest"
+            />
+          </div>
+          <div className="minimal-about-copy">
+            <p className="minimal-eyebrow">A local welcome</p>
+            <h2>Not just a place to visit. A place to belong.</h2>
+            <p>
+              Kyrgyzest is a local team sharing the landscapes, traditions and
+              everyday warmth of our home. Come as a guest; leave with a
+              connection.
+            </p>
+            <a
+              className="minimal-text-link"
+              href="https://www.instagram.com/kyrgyzest.tours/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Meet us on Instagram <I name="arrow-up-right-line" />
+            </a>
+          </div>
+        </section>
+
+        <section id="minimal-contact" className="minimal-contact">
+          <p className="minimal-eyebrow">Your journey starts here</p>
+          <h2>Let’s make it yours.</h2>
+          <button type="button" className="minimal-primary-link" onClick={openBooking}>
+            Plan a trip <I name="arrow-right-line" />
+          </button>
+        </section>
+      </main>
+
+      <footer className="minimal-footer">
+        <a href="#minimal-home" aria-label="Back to top">
+          <img src={WHITE_LETTERING} alt="Kyrgyzest Tours" />
+        </a>
+        <span>Bishkek, Kyrgyzstan</span>
+        <a href={`https://wa.me/${PHONE}`} target="_blank" rel="noopener noreferrer">
+          Say hello <I name="arrow-up-right-line" />
+        </a>
+      </footer>
+    </div>
+  );
+}
 export default function App() {
   const [booking, setBooking] = useState(false),
     [photo, setPhoto] = useState(null),
     [showScrollTop, setShowScrollTop] = useState(false);
+  const minimal = new URLSearchParams(window.location.search).get("v") === "2";
   useEffect(() => {
     AOS.init({
       duration: 1050,
@@ -1984,21 +1996,26 @@ export default function App() {
     );
   return (
     <>
-      <Header openBooking={openBooking} />
-      <main>
-        <VideoHero openBooking={openBooking} />
-        <IntroBridge openBooking={openBooking} />
-        <Tours />
-        <Why />
-        <Destinations />
-        <Gallery openPhoto={setPhoto} />
-        <Reviews />
-        <Story />
-        <Blog />
-        <Faq />
-      </main>
-      <Footer />
-      {showScrollTop && (
+      {minimal ? (
+        <MinimalHomepage openBooking={openBooking} />
+      ) : (
+        <>
+          <Header openBooking={openBooking} />
+          <main>
+            <VideoHero />
+            <Tours />
+            <Why />
+            <Destinations />
+            <Gallery openPhoto={setPhoto} />
+            <Reviews />
+            <Story />
+            <Blog />
+            <Faq />
+          </main>
+          <Footer />
+        </>
+      )}
+      {showScrollTop && !minimal && (
         <button
           type="button"
           className="floating-scroll-top"
